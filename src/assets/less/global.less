@@ -1,0 +1,52 @@
+/* less全局变量 */
+.bg(@url) {
+  background-image: url(@url);
+  background-position: 0 0;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+}
+/* 绝对水平垂直居中 */
+.absCenter {
+  left:0;right:0;top:0;bottom: 0;
+  margin: auto;
+}
+/* 绝对水平居中 */
+.absHorCenter{
+  left:0;right:0;margin: 0 auto;
+}
+.clearfix:after{content:""; display:block; visibility:hidden; height:0; clear:both;}
+.clearfix{zoom:1;}
+/* 
+快速生成帧动画
+@m:宽的帧数
+@n:高的帧数
+@i:从左往右第几帧
+@j:从上往下第几帧
+@width:单个帧的宽
+@height:单个帧的高
+*/
+.circleBig(@m: 0, @n: 0, @i:0, @j:0,@width:0,@height:0) when (@i < @m) and (@j < @n) {
+  @tmp1: @m * @n; // 总共的帧数
+  @tmp2: @j * @m + @i; // 当前的帧数
+  @x: @tmp2 / @tmp1 * 100; // 当前的进度
+  @selector: e("@{x}%");
+  @tmp3: @i * -@width;
+  @tmp4: @j * -@height;
+  @left: e("@{tmp3}px"); // background left 值
+  @top: e("@{tmp4}px"); // background top 值
+  @jPlus: @j + 1;
+  @iPlus: @i + 1;
+  @{selector} {
+    background-position: @left @top;
+  }
+  & when (@iPlus >= @m) {
+    .circleBig(@m, @n, 0, @jPlus,@width,@height);
+  }
+
+  & when (@iPlus < @m) {
+    .circleBig(@m, @n, @iPlus, @j,@width,@height);
+  }
+}
+/* 
+自定义的全局样式
+*/
